@@ -1,0 +1,25 @@
+table DimCompany
+	lineageTag: 076acfde-1a50-4285-b812-1f74850bc181
+
+	column company_name
+		dataType: string
+		lineageTag: 523e8b12-e849-439c-a0d1-0d07b7765047
+		summarizeBy: none
+		sourceColumn: company_name
+
+		annotation SummarizationSetBy = Automatic
+
+	partition DimCompany = m
+		mode: import
+		source =
+				let
+				    Source = postings,
+				    #"Removed Other Columns" = Table.SelectColumns(Source,{"company_name"}),
+				    #"Removed Duplicates" = Table.Distinct(#"Removed Other Columns")
+				in
+				    #"Removed Duplicates"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

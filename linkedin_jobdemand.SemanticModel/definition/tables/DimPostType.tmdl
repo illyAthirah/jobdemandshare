@@ -1,0 +1,25 @@
+table DimPostType
+	lineageTag: f23f77e1-31a4-4729-89c7-60e66cc96a0b
+
+	column post_type
+		dataType: string
+		lineageTag: b58a2704-4505-4d49-b021-691ae760786e
+		summarizeBy: none
+		sourceColumn: post_type
+
+		annotation SummarizationSetBy = Automatic
+
+	partition DimPostType = m
+		mode: import
+		source =
+				let
+				    Source = Post_Engagement,
+				    #"Removed Other Columns" = Table.SelectColumns(Source,{"post_type"}),
+				    #"Removed Duplicates" = Table.Distinct(#"Removed Other Columns")
+				in
+				    #"Removed Duplicates"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

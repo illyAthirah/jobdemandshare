@@ -1,0 +1,26 @@
+table DimExperienceLevel
+	lineageTag: ef1b1307-2526-4406-9ca4-eb48327cfff1
+
+	column formatted_experience_level
+		dataType: string
+		lineageTag: e2f75beb-de77-4d60-9cb6-f1e03dfb98dc
+		summarizeBy: none
+		sourceColumn: formatted_experience_level
+
+		annotation SummarizationSetBy = Automatic
+
+	partition DimExperienceLevel = m
+		mode: import
+		source =
+				let
+				    Source = postings,
+				    #"Removed Other Columns" = Table.SelectColumns(Source,{"formatted_experience_level"}),
+				    #"Removed Duplicates" = Table.Distinct(#"Removed Other Columns"),
+				    #"Filtered Rows" = Table.SelectRows(#"Removed Duplicates", each ([formatted_experience_level] <> "Not stated"))
+				in
+				    #"Filtered Rows"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

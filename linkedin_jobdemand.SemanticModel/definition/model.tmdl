@@ -1,0 +1,30 @@
+model Model
+	culture: en-MY
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	sourceQueryCulture: en-MY
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+annotation __PBI_TimeIntelligenceEnabled = 1
+
+annotation PBI_QueryOrder = ["Post_Engagement","postings","DimPostType","DimMediaType","DimDayOfWeek","DimCompany","DimLocation","DimWorkType","DimExperienceLevel","Measures (1)"]
+
+annotation PBI_ProTooling = ["DevMode"]
+
+ref table Post_Engagement
+ref table DateTableTemplate_b2b820db-dcec-432c-aa58-ec142d404cc4
+ref table postings
+ref table LocalDateTable_712a977e-b6fc-48fa-b750-f7dd017e388c
+ref table DimDate
+ref table DimPostType
+ref table DimMediaType
+ref table DimDayOfWeek
+ref table DimCompany
+ref table DimLocation
+ref table DimWorkType
+ref table DimExperienceLevel
+ref table 'Measures (1)'
+
+ref cultureInfo en-MY
+

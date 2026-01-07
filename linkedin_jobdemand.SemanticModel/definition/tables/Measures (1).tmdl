@@ -1,0 +1,165 @@
+table 'Measures (1)'
+	lineageTag: dc3b3c81-ab99-469c-8599-65c916285fff
+
+	measure 'Total Impressions' = ```
+			SUM(Post_Engagement[impressions])
+			
+			```
+		formatString: 0
+		lineageTag: 31b2f59a-9618-441e-8341-10fc8bc085e4
+
+	measure 'Total Likes' = ```
+			SUM(Post_Engagement[likes])
+			
+			```
+		formatString: 0
+		lineageTag: e9f46707-5772-4839-9b38-ef7325fca96a
+
+	measure 'Total Comments' = ```
+			SUM(Post_Engagement[comments])
+			
+			```
+		formatString: 0
+		lineageTag: 9f449ea2-a6f5-40bf-bbae-f53f3a0880b8
+
+	measure 'Total Shares' = ```
+			SUM(Post_Engagement[shares])
+			
+			```
+		formatString: 0
+		lineageTag: 6787c413-b082-4e13-99f1-9ccb28823beb
+
+	measure 'Total Engagements' = ```
+			SUM(Post_Engagement[engagements])
+			
+			```
+		formatString: 0
+		lineageTag: 3ba5f5cf-f8b5-4cdf-9072-5936160cbb52
+
+	measure 'Engagement Rate %' = ```
+			
+			DIVIDE([Total Engagements], [Total Impressions])
+			
+			```
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: 14049111-c568-44fa-acc4-d9213e0db52d
+
+	measure 'Total Posts' = ```
+			DISTINCTCOUNT(Post_Engagement[post_id])
+			
+			```
+		formatString: 0
+		lineageTag: f8ae7016-ec27-4f44-ba22-55bf2d2b7e8a
+
+	measure 'Avg Engagements per Post' = ```
+			
+			DIVIDE([Total Engagements], [Total Posts])
+			
+			```
+		lineageTag: a18b3117-f546-4754-b576-077608c5ffa3
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Total Jobs' = ```
+			COUNTROWS(postings)
+			
+			```
+		formatString: 0
+		lineageTag: 309a8117-9ff7-45b0-885d-887b72397ae4
+
+	measure 'Total Views' = ```
+			SUM(postings[views])
+			
+			```
+		lineageTag: dadb88b9-6ae0-400f-949e-42e8c64f29a1
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Total Applies' = ```
+			SUM(postings[applies])
+			
+			```
+		lineageTag: db3199b7-4739-4ac6-b358-f0e1fff48c33
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Apply Rate %' = ```
+			
+			DIVIDE([Total Applies], [Total Views])
+			
+			```
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: 66645efe-47b4-492e-9b59-82716009b999
+
+	measure 'Avg Views per Job' = ```
+			
+			DIVIDE([Total Views], [Total Jobs])
+			
+			```
+		lineageTag: 198aca02-459f-4379-a52c-1244787ea097
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Avg Applies per Job' = ```
+			
+			DIVIDE([Total Applies], [Total Jobs])
+			
+			```
+		lineageTag: 1de45bfa-25a2-47bc-92ab-69290bc23ef1
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Remote Jobs' = ```
+			
+			CALCULATE([Total Jobs], postings[is_remote] = TRUE())
+			
+			```
+		formatString: 0
+		lineageTag: f0a17035-a4b5-4e5d-bca4-028e6f97c43f
+
+	measure 'Remote %' = ```
+			
+			DIVIDE([Remote Jobs], [Total Jobs])
+			
+			```
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: 83051661-a1ed-454b-ab5c-e98ddd060460
+
+	measure 'Engagements by Day' = ```
+			[Total Engagements]
+			
+			```
+		formatString: 0
+		lineageTag: bd18df5b-73b0-4177-9dbd-2b459d865ff4
+
+	measure 'Jobs by Day' = ```
+			[Total Jobs]
+			
+			```
+		formatString: 0
+		lineageTag: aa541f67-d715-415d-8811-30076cd62ded
+
+	column x
+		dataType: string
+		isHidden
+		lineageTag: f12a4a2d-39e8-466d-a557-f918eb8b6d87
+		summarizeBy: none
+		sourceColumn: x
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Measures (1)' = m
+		mode: import
+		source =
+				let
+				    Source = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("i44FAA==", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [x = _t]),
+				    #"Changed Type" = Table.TransformColumnTypes(Source,{{"x", type text}})
+				in
+				    #"Changed Type"
+
+	changedProperty = Name
+
+	annotation PBI_ResultType = Table
+

@@ -1,0 +1,25 @@
+table DimLocation
+	lineageTag: ede184d4-63d4-49bd-a49d-ce6d43c87e9f
+
+	column location
+		dataType: string
+		lineageTag: 89dce92b-a75d-4850-8910-1e4cdb90681e
+		summarizeBy: none
+		sourceColumn: location
+
+		annotation SummarizationSetBy = Automatic
+
+	partition DimLocation = m
+		mode: import
+		source =
+				let
+				    Source = postings,
+				    #"Removed Other Columns" = Table.SelectColumns(Source,{"location"}),
+				    #"Removed Duplicates" = Table.Distinct(#"Removed Other Columns")
+				in
+				    #"Removed Duplicates"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

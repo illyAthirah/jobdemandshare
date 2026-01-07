@@ -1,0 +1,26 @@
+table DimWorkType
+	lineageTag: f6f4f2e7-5efd-494a-bcf8-c87d113f5ff0
+
+	column formatted_work_type
+		dataType: string
+		lineageTag: ac626267-9f57-4862-bc90-d754b08a0644
+		summarizeBy: none
+		sourceColumn: formatted_work_type
+
+		annotation SummarizationSetBy = Automatic
+
+	partition DimWorkType = m
+		mode: import
+		source =
+				let
+				    Source = postings,
+				    #"Removed Other Columns" = Table.SelectColumns(Source,{"formatted_work_type"}),
+				    #"Removed Duplicates" = Table.Distinct(#"Removed Other Columns"),
+				    #"Filtered Rows" = Table.SelectRows(#"Removed Duplicates", each ([formatted_work_type] <> "Other"))
+				in
+				    #"Filtered Rows"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

@@ -1,0 +1,213 @@
+table postings
+	lineageTag: 3d73f3eb-2c5e-40a7-ae8c-3f7e9ed1c822
+
+	column company_name
+		dataType: string
+		lineageTag: 9264b1f4-1191-4675-b25a-9e729b572505
+		summarizeBy: none
+		sourceColumn: company_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column title
+		dataType: string
+		lineageTag: 325e3485-3f96-4968-b88e-eb4b207ec1ba
+		summarizeBy: none
+		sourceColumn: title
+
+		annotation SummarizationSetBy = Automatic
+
+	column max_salary
+		dataType: string
+		lineageTag: 31a2ecd9-5885-46cc-be7e-743abe307820
+		summarizeBy: none
+		sourceColumn: max_salary
+
+		annotation SummarizationSetBy = Automatic
+
+	column pay_period
+		dataType: string
+		lineageTag: 37769cdb-1b95-4b4f-a446-5e3910b961b1
+		summarizeBy: none
+		sourceColumn: pay_period
+
+		annotation SummarizationSetBy = Automatic
+
+	column location
+		dataType: string
+		lineageTag: fb44f407-f3d6-499c-a169-ee1b59846874
+		summarizeBy: none
+		sourceColumn: location
+
+		annotation SummarizationSetBy = Automatic
+
+	column views
+		dataType: double
+		formatString: 0
+		lineageTag: 0359543e-69c5-4319-bc64-2a487168c106
+		summarizeBy: sum
+		sourceColumn: views
+
+		annotation SummarizationSetBy = Automatic
+
+	column min_salary
+		dataType: string
+		lineageTag: cdaf2c57-5548-4765-9726-dee0180cd7ea
+		summarizeBy: none
+		sourceColumn: min_salary
+
+		annotation SummarizationSetBy = Automatic
+
+	column formatted_work_type
+		dataType: string
+		lineageTag: da44e5be-4012-40e7-996c-889212927d73
+		summarizeBy: none
+		sourceColumn: formatted_work_type
+
+		annotation SummarizationSetBy = Automatic
+
+	column applies
+		dataType: double
+		formatString: 0
+		lineageTag: 3aaa81b1-6a3a-4bb2-9783-33b29275757d
+		summarizeBy: sum
+		sourceColumn: applies
+
+		annotation SummarizationSetBy = Automatic
+
+	column application_type
+		dataType: string
+		lineageTag: cc90a6d8-82ac-46bf-b1d7-0b00ee0939fd
+		summarizeBy: none
+		sourceColumn: application_type
+
+		annotation SummarizationSetBy = Automatic
+
+	column formatted_experience_level
+		dataType: string
+		lineageTag: 5901c2bf-4f76-41a8-b09b-7d33dd6851ea
+		summarizeBy: none
+		sourceColumn: formatted_experience_level
+
+		annotation SummarizationSetBy = Automatic
+
+	column work_type
+		dataType: string
+		lineageTag: 3231ddd4-2556-42c2-ae79-bc11a70d4d26
+		summarizeBy: none
+		sourceColumn: work_type
+
+		annotation SummarizationSetBy = Automatic
+
+	column normalized_salary
+		dataType: string
+		lineageTag: 2d09e850-57ed-4220-b8d8-1e9b55916883
+		summarizeBy: none
+		sourceColumn: normalized_salary
+
+		annotation SummarizationSetBy = Automatic
+
+	column is_remote
+		dataType: string
+		lineageTag: 2bfe0473-709c-47fd-8cc0-788318b7dd3a
+		summarizeBy: none
+		sourceColumn: is_remote
+
+		annotation SummarizationSetBy = Automatic
+
+	column listed_datetime
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 2dc5188e-872f-43f5-8502-8980e4b8872d
+		summarizeBy: none
+		sourceColumn: listed_datetime
+
+		variation Variation
+			isDefault
+			relationship: e32b40c3-5024-4b5a-8694-b7663aff7a0e
+			defaultHierarchy: LocalDateTable_712a977e-b6fc-48fa-b750-f7dd017e388c.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column original_listed_datetime
+		dataType: string
+		lineageTag: b7229ff3-a37e-408f-8b07-4d82fb4ba7dc
+		summarizeBy: none
+		sourceColumn: original_listed_datetime
+
+		annotation SummarizationSetBy = Automatic
+
+	column expiry_datetime
+		dataType: string
+		lineageTag: 49b47812-4537-4b49-b533-b2563eee7b3f
+		summarizeBy: none
+		sourceColumn: expiry_datetime
+
+		annotation SummarizationSetBy = Automatic
+
+	column listed_date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 3c1c9dd9-b9de-46ef-a66b-e744c9b997f3
+		summarizeBy: none
+		sourceColumn: listed_date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	partition postings = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents("C:\Users\Illy Athirah\Documents\UTHM2\UTHM\SEM 6 BIW\Data Science\Project Data Science\job demand\postings.csv"),[Delimiter=",", Columns=31, Encoding=65001, QuoteStyle=QuoteStyle.Csv]),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"job_id", Int64.Type}, {"company_name", type text}, {"title", type text}, {"description", type text}, {"max_salary", type number}, {"pay_period", type text}, {"location", type text}, {"company_id", Int64.Type}, {"views", Int64.Type}, {"med_salary", type number}, {"min_salary", type number}, {"formatted_work_type", type text}, {"applies", Int64.Type}, {"original_listed_time", Int64.Type}, {"remote_allowed", Int64.Type}, {"job_posting_url", type text}, {"application_url", type text}, {"application_type", type text}, {"expiry", Int64.Type}, {"closed_time", Int64.Type}, {"formatted_experience_level", type text}, {"skills_desc", type text}, {"listed_time", Int64.Type}, {"posting_domain", type text}, {"sponsored", Int64.Type}, {"work_type", type text}, {"currency", type text}, {"compensation_type", type text}, {"normalized_salary", type number}, {"zip_code", Int64.Type}, {"fips", Int64.Type}}),
+				    #"Reordered Columns" = Table.ReorderColumns(#"Changed Type",{"job_id", "company_id", "company_name", "title", "description", "max_salary", "pay_period", "location", "views", "med_salary", "min_salary", "formatted_work_type", "applies", "original_listed_time", "remote_allowed", "job_posting_url", "application_url", "application_type", "expiry", "closed_time", "formatted_experience_level", "skills_desc", "listed_time", "posting_domain", "sponsored", "work_type", "currency", "compensation_type", "normalized_salary", "zip_code", "fips"}),
+				    #"Removed Columns" = Table.RemoveColumns(#"Reordered Columns",{"job_posting_url", "application_url"}),
+				    #"Trimmed Text" = Table.TransformColumns(#"Removed Columns",{{"company_name", Text.Trim, type text}, {"title", Text.Trim, type text}, {"location", Text.Trim, type text}, {"formatted_work_type", Text.Trim, type text}, {"formatted_experience_level", Text.Trim, type text}, {"posting_domain", Text.Trim, type text}, {"application_type", Text.Trim, type text}}),
+				    #"Cleaned Text" = Table.TransformColumns(#"Trimmed Text",{{"company_name", Text.Clean, type text}, {"title", Text.Clean, type text}, {"location", Text.Clean, type text}, {"formatted_work_type", Text.Clean, type text}, {"formatted_experience_level", Text.Clean, type text}, {"posting_domain", Text.Clean, type text}, {"application_type", Text.Clean, type text}}),
+				    #"Added Custom" = Table.AddColumn(#"Cleaned Text", "is_remote", each if [remote_allowed] = 1 then true else false),
+				    #"Removed Columns1" = Table.RemoveColumns(#"Added Custom",{"remote_allowed"}),
+				    #"Added Custom1" = Table.AddColumn(#"Removed Columns1", "listed_datetime", each #datetime(1970, 1, 1, 0, 0, 0) + #duration(0, 0, 0, [listed_time] / 1000)),
+				    #"Changed Type1" = Table.TransformColumnTypes(#"Added Custom1",{{"listed_datetime", type datetime}}),
+				    #"Removed Columns2" = Table.RemoveColumns(#"Changed Type1",{"listed_time"}),
+				    #"Added Custom2" = Table.AddColumn(#"Removed Columns2", "original_listed_datetime", each #datetime(1970, 1, 1, 0, 0, 0) + #duration(0, 0, 0, [original_listed_time] / 1000)),
+				    #"Removed Columns3" = Table.RemoveColumns(#"Added Custom2",{"original_listed_time"}),
+				    #"Added Custom3" = Table.AddColumn(#"Removed Columns3", "expiry_datetime", each #datetime(1970, 1, 1, 0, 0, 0) + #duration(0, 0, 0, [expiry] / 1000)),
+				    #"Removed Columns4" = Table.RemoveColumns(#"Added Custom3",{"expiry"}),
+				    #"Changed Type2" = Table.TransformColumnTypes(#"Removed Columns4",{{"closed_time", type number}}),
+				    #"Added Custom4" = Table.AddColumn(#"Changed Type2", "closed_datetime", each if [closed_time] = null then null
+				else #datetime(1970, 1, 1, 0, 0, 0) + #duration(0, 0, 0, Number.From([closed_time]) / 1000)),
+				    #"Removed Columns5" = Table.RemoveColumns(#"Added Custom4",{"closed_time"}),
+				    #"Inserted Date" = Table.AddColumn(#"Removed Columns5", "Date", each DateTime.Date([listed_datetime]), type date),
+				    #"Renamed Columns" = Table.RenameColumns(#"Inserted Date",{{"Date", "listed_date"}}),
+				    #"Replaced Value" = Table.ReplaceValue(#"Renamed Columns",null,0,Replacer.ReplaceValue,{"views"}),
+				    #"Replaced Value1" = Table.ReplaceValue(#"Replaced Value",null,0,Replacer.ReplaceValue,{"applies"}),
+				    #"Removed Columns6" = Table.RemoveColumns(#"Replaced Value1",{"skills_desc", "med_salary", "description", "compensation_type"}),
+				    #"Removed Duplicates" = Table.Distinct(#"Removed Columns6", {"job_id"}),
+				    #"Removed Columns7" = Table.RemoveColumns(#"Removed Duplicates",{"currency", "job_id", "company_id"}),
+				    #"Trimmed Text1" = Table.TransformColumns(#"Removed Columns7",{{"company_name", Text.Trim, type text}}),
+				    #"Cleaned Text1" = Table.TransformColumns(#"Trimmed Text1",{{"company_name", Text.Clean, type text}}),
+				    #"Filtered Rows" = Table.SelectRows(#"Cleaned Text1", each [company_name] <> null and [company_name] <> ""),
+				    #"Changed Type3" = Table.TransformColumnTypes(#"Filtered Rows",{{"max_salary", type text}}),
+				    #"Replaced Value2" = Table.ReplaceValue(#"Changed Type3",null,"Not stated",Replacer.ReplaceValue,{"max_salary"}),
+				    #"Replaced Value3" = Table.ReplaceValue(#"Replaced Value2","","Not stated",Replacer.ReplaceValue,{"pay_period"}),
+				    #"Changed Type4" = Table.TransformColumnTypes(#"Replaced Value3",{{"min_salary", type text}}),
+				    #"Replaced Value4" = Table.ReplaceValue(#"Changed Type4",null,"Not stated",Replacer.ReplaceValue,{"min_salary"}),
+				    #"Replaced Value5" = Table.ReplaceValue(#"Replaced Value4","","Not stated",Replacer.ReplaceValue,{"formatted_experience_level"}),
+				    #"Removed Columns8" = Table.RemoveColumns(#"Replaced Value5",{"posting_domain", "sponsored"}),
+				    #"Changed Type5" = Table.TransformColumnTypes(#"Removed Columns8",{{"normalized_salary", type text}}),
+				    #"Removed Columns9" = Table.RemoveColumns(#"Changed Type5",{"zip_code"}),
+				    #"Changed Type6" = Table.TransformColumnTypes(#"Removed Columns9",{{"normalized_salary", type text}}),
+				    #"Replaced Value6" = Table.ReplaceValue(#"Changed Type6",null,"Disclosed",Replacer.ReplaceValue,{"normalized_salary"}),
+				    #"Removed Columns10" = Table.RemoveColumns(#"Replaced Value6",{"closed_datetime", "fips"}),
+				    #"Filtered Rows1" = Table.SelectRows(#"Removed Columns10", each [listed_date] > #date(2024, 1, 1)),
+				    #"Kept First Rows" = Table.FirstN(#"Filtered Rows1",30000)
+				in
+				    #"Kept First Rows"
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

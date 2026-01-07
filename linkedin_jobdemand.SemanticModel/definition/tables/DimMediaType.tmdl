@@ -1,0 +1,27 @@
+table DimMediaType
+	lineageTag: 04b56af8-4f88-4410-a08f-1ece37a2625a
+
+	column media_type
+		dataType: string
+		lineageTag: d66502b9-88d5-49e5-b764-75249d41c325
+		summarizeBy: none
+		sourceColumn: media_type
+
+		annotation SummarizationSetBy = Automatic
+
+	partition DimMediaType = m
+		mode: import
+		source =
+				let
+				    Source = Post_Engagement,
+				    #"Removed Other Columns" = Table.SelectColumns(Source,{"media_type"}),
+				    #"Removed Duplicates" = Table.Distinct(#"Removed Other Columns"),
+				    #"Replaced Value" = Table.ReplaceValue(#"Removed Duplicates","No media","Null",Replacer.ReplaceText,{"media_type"}),
+				    #"Filtered Rows" = Table.SelectRows(#"Replaced Value", each ([media_type] <> "Null"))
+				in
+				    #"Filtered Rows"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

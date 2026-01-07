@@ -1,0 +1,25 @@
+table DimDayOfWeek
+	lineageTag: 5b5fc92e-e33b-482e-b064-1cc06e6e5bf9
+
+	column day_of_week
+		dataType: string
+		lineageTag: c4fd2510-f611-4b78-8e91-d707b148bce9
+		summarizeBy: none
+		sourceColumn: day_of_week
+
+		annotation SummarizationSetBy = Automatic
+
+	partition DimDayOfWeek = m
+		mode: import
+		source =
+				let
+				    Source = Post_Engagement,
+				    #"Removed Other Columns" = Table.SelectColumns(Source,{"day_of_week"}),
+				    #"Removed Duplicates" = Table.Distinct(#"Removed Other Columns")
+				in
+				    #"Removed Duplicates"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

@@ -1,0 +1,43 @@
+relationship e32b40c3-5024-4b5a-8694-b7663aff7a0e
+	joinOnDateBehavior: datePartOnly
+	fromColumn: postings.listed_datetime
+	toColumn: LocalDateTable_712a977e-b6fc-48fa-b750-f7dd017e388c.Date
+
+relationship 7a21f632-cb3f-cf9b-b78c-50aea3edcfa5
+	fromColumn: Post_Engagement.post_type
+	toColumn: DimPostType.post_type
+
+relationship 9020fa75-d876-3ced-c097-cbae3659f385
+	fromColumn: Post_Engagement.media_type
+	toColumn: DimMediaType.media_type
+
+relationship 8712c9ba-ee13-8db8-3d29-a963af287a08
+	fromColumn: Post_Engagement.day_of_week
+	toColumn: DimDayOfWeek.day_of_week
+
+relationship 154b375a-9fc3-c9f9-deed-0bd6ab30f4ac
+	crossFilteringBehavior: bothDirections
+	toCardinality: many
+	fromColumn: DimCompany.company_name
+	toColumn: postings.company_name
+
+relationship 1d330a9a-5b48-1227-d2b7-c88277460861
+	fromColumn: postings.location
+	toColumn: DimLocation.location
+
+relationship 21fff2e8-e865-b424-25e0-74dfe0a603c9
+	fromColumn: postings.formatted_work_type
+	toColumn: DimWorkType.formatted_work_type
+
+relationship 7343b892-d580-9ee8-4d47-f8378f3cfce0
+	fromColumn: postings.formatted_experience_level
+	toColumn: DimExperienceLevel.formatted_experience_level
+
+relationship 1c1a5087-ef8f-cdf5-b058-cf9768ceae92
+	fromColumn: postings.listed_date
+	toColumn: DimDate.Date
+
+relationship 614a63b0-5554-c0f2-5b9f-f15c898ba5ce
+	fromColumn: Post_Engagement.post_date
+	toColumn: DimDate.Date
+

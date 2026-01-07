@@ -1,0 +1,80 @@
+table DimDate
+	lineageTag: 1c7bdf62-3462-4de9-ac99-95d7bc66f120
+	dataCategory: Time
+
+	column Date
+		isKey
+		formatString: General Date
+		lineageTag: 863ece3b-8b08-4d84-968d-26666b7716b0
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Date]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Year
+		formatString: 0
+		lineageTag: 06ae433e-8eb1-4678-be60-f1f31a50384c
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Year]
+
+		annotation SummarizationSetBy = Automatic
+
+	column MonthNo
+		formatString: 0
+		lineageTag: ae799803-3d44-409a-a82d-738d7694ebe3
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [MonthNo]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Month
+		lineageTag: fa138115-6988-4cee-b781-498318de4530
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Month]
+
+		annotation SummarizationSetBy = Automatic
+
+	column YearMonth
+		lineageTag: 9242fd46-04ae-4dc0-86e4-c5e3433b3c9f
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [YearMonth]
+
+		annotation SummarizationSetBy = Automatic
+
+	column DayName
+		lineageTag: d01c501b-5a5a-4838-8f2f-0befcabf3320
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [DayName]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition DimDate = calculated
+		mode: import
+		source = ```
+				
+				VAR minEng = MINX(Post_Engagement, Post_Engagement[post_date])
+				VAR maxEng = MAXX(Post_Engagement, Post_Engagement[post_date])
+				VAR minJob = MINX(postings, postings[listed_date])
+				VAR maxJob = MAXX(postings, postings[listed_date])
+				VAR minAll = MIN(minEng, minJob)
+				VAR maxAll = MAX(maxEng, maxJob)
+				RETURN
+				ADDCOLUMNS(
+				    CALENDAR(minAll, maxAll),
+				    "Year", YEAR([Date]),
+				    "MonthNo", MONTH([Date]),
+				    "Month", FORMAT([Date], "MMM"),
+				    "YearMonth", FORMAT([Date], "YYYY-MM"),
+				    "DayName", FORMAT([Date], "DDD")
+				)
+				
+				```
+
+	annotation PBI_Id = e09cd7ea1baa4a9b9c13b6f7d1f63050
+

@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "Report",
+    "displayName": "linkedin_jobdemand"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "3d019556-836c-4d97-9f24-d70c19eb8469"
+  }
+}

@@ -1,0 +1,182 @@
+table Post_Engagement
+	lineageTag: c80a0dc8-50e1-4a18-9e6a-52b23eb3cdb3
+
+	column post_id
+		dataType: int64
+		formatString: 0
+		lineageTag: b2b7435c-fb00-43d6-82ae-d171add4c5b1
+		summarizeBy: sum
+		sourceColumn: post_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column post_date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: f5b4e45b-05cc-4d44-9c33-fd8fe864773c
+		summarizeBy: none
+		sourceColumn: post_date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column post_time
+		dataType: dateTime
+		formatString: Long Time
+		lineageTag: 5724ad80-ceed-4503-b163-0ff9b7be9bca
+		summarizeBy: none
+		sourceColumn: post_time
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Time
+
+	column day_of_week
+		dataType: string
+		lineageTag: 1fe12e4a-098d-48c1-b612-be47d7297e0a
+		summarizeBy: none
+		sourceColumn: day_of_week
+
+		annotation SummarizationSetBy = Automatic
+
+	column post_type
+		dataType: string
+		lineageTag: 99a480d2-db38-430c-ad28-6ea5e0d75e17
+		summarizeBy: none
+		sourceColumn: post_type
+
+		annotation SummarizationSetBy = Automatic
+
+	column content_length
+		dataType: int64
+		formatString: 0
+		lineageTag: 6272995e-9a16-49dc-8851-a4211a6fb87f
+		summarizeBy: sum
+		sourceColumn: content_length
+
+		annotation SummarizationSetBy = Automatic
+
+	column hashtags_count
+		dataType: int64
+		formatString: 0
+		lineageTag: 39959da4-926f-443a-b432-f50dc8e09014
+		summarizeBy: sum
+		sourceColumn: hashtags_count
+
+		annotation SummarizationSetBy = Automatic
+
+	column has_media
+		dataType: string
+		lineageTag: 99e65b3e-6f87-4067-a913-55e348edeb6d
+		summarizeBy: none
+		sourceColumn: has_media
+
+		annotation SummarizationSetBy = Automatic
+
+	column media_type
+		dataType: string
+		lineageTag: 70c2262c-74db-4e81-813a-26ee240ddbba
+		summarizeBy: none
+		sourceColumn: media_type
+
+		annotation SummarizationSetBy = Automatic
+
+	column impressions
+		dataType: int64
+		formatString: 0
+		lineageTag: 3c6b0e21-6df4-443e-b695-1e7895effd87
+		summarizeBy: sum
+		sourceColumn: impressions
+
+		annotation SummarizationSetBy = Automatic
+
+	column likes
+		dataType: int64
+		formatString: 0
+		lineageTag: ca5faaa0-1b4a-435b-bf66-4b8fc130165b
+		summarizeBy: sum
+		sourceColumn: likes
+
+		annotation SummarizationSetBy = Automatic
+
+	column comments
+		dataType: int64
+		formatString: 0
+		lineageTag: 62943175-fd27-42af-b15a-5f4b67090906
+		summarizeBy: sum
+		sourceColumn: comments
+
+		annotation SummarizationSetBy = Automatic
+
+	column shares
+		dataType: int64
+		formatString: 0
+		lineageTag: 85b1938f-9047-46fb-a3ec-578991c4ee0c
+		summarizeBy: sum
+		sourceColumn: shares
+
+		annotation SummarizationSetBy = Automatic
+
+	column engagement_rate
+		dataType: double
+		lineageTag: 27f74023-a1f9-4daf-8749-33cd971f8378
+		summarizeBy: sum
+		sourceColumn: engagement_rate
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column post_datetime
+		dataType: string
+		lineageTag: fa03de22-e065-4497-893d-4d24d56da987
+		summarizeBy: none
+		sourceColumn: post_datetime
+
+		annotation SummarizationSetBy = Automatic
+
+	column engagements
+		dataType: string
+		lineageTag: c63cb026-6131-4d33-aed6-ba0222cdcaf6
+		summarizeBy: none
+		sourceColumn: engagements
+
+		annotation SummarizationSetBy = Automatic
+
+	column engagement_rate_calc
+		dataType: string
+		lineageTag: 3c482566-d900-4b39-8302-12d3c4fe21e2
+		summarizeBy: none
+		sourceColumn: engagement_rate_calc
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Post_Engagement = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents("C:\Users\Illy Athirah\Documents\UTHM2\UTHM\SEM 6 BIW\Data Science\Project Data Science\job demand\LinkedIn_Post_Engagement_Analytics_Medium.csv"),[Delimiter=",", Columns=14, Encoding=1252, QuoteStyle=QuoteStyle.None]),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"post_id", Int64.Type}, {"post_date", type date}, {"post_time", type time}, {"day_of_week", type text}, {"post_type", type text}, {"content_length", Int64.Type}, {"hashtags_count", Int64.Type}, {"has_media", type text}, {"media_type", type text}, {"impressions", Int64.Type}, {"likes", Int64.Type}, {"comments", Int64.Type}, {"shares", Int64.Type}, {"engagement_rate", type number}}),
+				    #"Trimmed Text" = Table.TransformColumns(#"Changed Type",{{"has_media", Text.Trim, type text}, {"post_type", Text.Trim, type text}, {"day_of_week", Text.Trim, type text}, {"media_type", Text.Trim, type text}}),
+				    #"Replaced Value" = Table.ReplaceValue(#"Trimmed Text","None","No media",Replacer.ReplaceText,{"media_type"}),
+				    #"Changed Type1" = Table.TransformColumnTypes(#"Replaced Value",{{"post_date", type date}, {"post_time", type time}}),
+				    #"Added Custom" = Table.AddColumn(#"Changed Type1", "post_datetime", each #datetime(
+				    Date.Year([post_date]),
+				    Date.Month([post_date]),
+				    Date.Day([post_date]),
+				    Time.Hour([post_time]),
+				    Time.Minute([post_time]),
+				    Time.Second([post_time])
+				)),
+				    #"Added Custom1" = Table.AddColumn(#"Added Custom", "engagements", each [likes] + [comments] + [shares]),
+				    #"Added Custom2" = Table.AddColumn(#"Added Custom1", "engagement_rate_calc", each Number.Round(([engagements]/[impressions]) * 100,2)),
+				    #"Removed Duplicates" = Table.Distinct(#"Added Custom2", {"post_id"})
+				in
+				    #"Removed Duplicates"
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+
